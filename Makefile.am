@@ -1,9 +1,8 @@
 ## Process this file with automake to create Makefile.in
 
-## Makefile for Netcat.
+## Makefile for Log4Legal.
 
-## Copyright (C) 1995, 1996, 1997, 1998, 1999, 2001, 2002 Free
-## Software Foundation, Inc.
+## Copyright (C) 2015 Free Software Foundation, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -23,4 +22,4 @@ EXTRA_DIST = AUTHORS COPYING ChangeLog INSTALL README TODO
 
 ## Proceed to subdirs
 
-SUBDIRS = lib src doc
+SUBDIRS = lib src
