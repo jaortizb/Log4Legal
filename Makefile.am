@@ -19,10 +19,8 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign dist-bzip2
 
-ACLOCAL_AMFLAGS = -I m4
-
 EXTRA_DIST = AUTHORS COPYING ChangeLog INSTALL README TODO 
 
 ## Proceed to subdirs
 
-SUBDIRS = m4 lib src doc po
+SUBDIRS = lib src doc
