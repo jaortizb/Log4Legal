@@ -1,7 +1,7 @@
 	README
 	Part of the GNU netcat project
 
-	Copyright (C) 2002 - 2004  Giovanni Giacobbi
+	Copyright (C) 2015 - 2016  Jose Antonio Ortiz
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -14,12 +14,7 @@
 	GNU General Public License for more details.
 
 
-Netcat is a featured networking utility which reads and writes data across
-network connections, using the TCP/IP protocol.
-It is designed to be a reliable "back-end" tool that can be used directly or
-easily driven by other programs and scripts. At the same time, it is a
-feature-rich network debugging and exploration tool, since it can create
-almost any kind of connection you would need and has several interesting
-built-in capabilities.
+Log4legal is a featured logs utility which generate a custom library which
+make applications ables to generate legal strong logs in Law Courts.
 
 This file will be written soon or late...
