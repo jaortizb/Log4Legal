@@ -14,7 +14,7 @@
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
 
-# $Id: Makefile.am,v 1.6 2003-01-03 22:53:31 themnemonic Exp $
+# $Id: Makefile.am,v 1.0 2015-11-03 22:53:31 themnemonic Exp $
 
 AUTOMAKE_OPTIONS = no-dependencies foreign dist-bzip2
 
