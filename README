@@ -1,11 +1,132 @@
 Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014, 2015 Free Software
 Foundation, Inc.
 
-   This file is free documentation; the Free Software Foundation gives
+This file is free documentation; the Free Software Foundation gives
 unlimited permission to copy, distribute and modify it.
 
+Log4Legal is a tool that allows you to generate a library for records of logs 
+allowing signatures at the register lines and subsequently used for legal purposes 
+and operational security in the company.
 
-Log4legal is a featured logs utility which generate a custom library which
-make applications ables to generate legal strong logs in Law Courts.
+In addition, the Log4Legal performance is extraordinary (better than any of his)
+competitors) and can be used in high-performance information systems without any
+problem. Aside from the special format of the lines and the considerations of
+performance is a tool, that once deployed, it is extremely simple to use as it is 
+basically an instrunccion type printf for code C/C++ which submits to the corresponding 
+line log file to register.
 
-This file will be written soon or late...
+Note: up to here sounds good but as you'll see, if you are still reading, is not a
+tool for newbies.
+
+But, the performance achieved with Log4Legal has a price. To achieve this, it I have 
+intentionally abused programming macros and decisions in time of compilation which 
+makes her a little hard configuracionimplantacion.
+
+And obviously, this implies that the size of the generated binary will be significantly
+greater (or not) than others achieved with a functions based version rather than macros.
+
+¿Como sería el registro de "Hola Mundo!"?. El fuente que conseguiría esta proeza sería
+el siguiente:
+
+What does the "Hello world!" registration looks like. The source that would achieve this feat would be
+the following:
+
+1 #include <string.h>
+2 #include <stdio.h>
+3 #include "l4l.h"
+
+4 int main(int argc, char **argv) {
+5	int rc;
+
+6	rc = l4l_init("log.cfg","test",argc,argv);
+7	l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,"Hola Mundo!");
+8	l4l_end();
+9	return(0);
+}
+
+[3] Necessary to include the capabilities of log4legal.
+[5] Resource id for log4legal code.
+[6] Initialization settings registered in log.cfg data structures whose details will 
+be later that come from configuration file.
+Likewise this line needs to be defined two environment variables before
+execution:
+
+	L4L_LOG_PATH -> To find the path where the log files will be stored.
+	L4L_KEY -> password needed for the chained hash.
+
+	The description of the parameters of the l4l_init function is as follows:
+	
+	Param #1 Configuration file. Please see the file log.cfg used for test.cfg, in the test directory.
+	Param #2 ID. that enables you to associate part of the configuration to the reserved resource 
+	on [5] and it is part of the name of the configuration variable: 
+	
+		For example: log4legal.test.print_mask=0xffffffff.
+
+	This allows to use the same configuration file for different behaviors depending on indicated 
+	in the instruction l4_linit.
+	
+[7] It is a statement of the type printf with three parameters:
+
+	Param #1 Mascara -> Este campo sustituye al parámetro nivel de trazas de otras librerías
+	y su significado es el siguiente; se hace un AND lógico con el valor configurado 
+	en el fichero de configuración (log.cfg para nuestro caso) para la variable de configuración
+	log4legal.test.print_mask=0xffffffff y si el resultado es distinto de 0 la traza se mostrará,
+	en caso contrario se ignorará.
+	
+	Esto permite tener distinto nivel de trazas para distintos entornos: DESARROLLO, PRUEBAS
+	o PRODUCCION ... o cualquier uso que se te ocurra de esta capacidad.
+	
+	Param #2 Formato -> L4L_MSJ_Comentar está predefinido (tu puedes predefinir las que quieras) con
+	el siguiente valor en l4lcompcfg.h:
+
+		#define L4L_MSJ_Comentar ">%s< MSJ-Comentar: %%s",L4L_HASH
+	
+	donde el primer %s mostrará la información cifrada que da valor legal a la línea y %%s es
+	donde se insertará "Hola Mundo!". Tu puedes definir tantos valores como quieras en la
+	definición del formato si despues tienes cuidado a la hora de usarlo. Por ejemplom si
+	defines:
+	
+		#define L4L_TestREADME ">%s< README_TEST: %%s - %%d - %%f",L4L_HASH
+	
+	para definir un nuevo formato e incluir un decimal y un float, a la hora de programar
+	deberas usar la línea:
+	
+		l4l_printf(0xFFFFFFFF,L4L_TestREADME,"Hola Mundo!",1,(float)1/2);
+		
+	este cambio deberás hacerlo en el fichero l4lcompcfg.h antes de compilar la librería
+	Esto parece un poco duro pero solamente se hace una vez y los beneficios son asombrosos
+	para sistemas de alto rendimiento.
+	
+	Param #3  -> lista de valores a insertar en el formato, al estilo printf y si el formato definido
+	es el correcto.
+
+[7] Liberación de los recursos para log4legal.
+
+OPCIONES PARA EL FICHERO DE CONFIGURACIÓN
+-----------------------------------------
+
+El formato de cada línea de configuración es la siguiente:
+
+	log4legal.<sub>.<variable>
+	
+Donde <sub> es el valor que el usuario decide y que debe de tenerse en cuenta en los desarrollos
+posteriores que usen log4legal. Y <variable> es la capacidad de log4legal configurable en
+este fichero. Sus posibles valores son:
+
+	flush_mask: Mascara de flush + fsync del buffer de sistema. Ej. 0x00000000 para no-flush (valor por defecto si no se informa en la configuración).
+	print_mask: Mascara para simular nivel de traza en varios entornos. Valor 0xffffffff por defecto.
+	hash_mask: Mascara par decidir si imprimir o no el hash. Ej. 0xffffffff para imprimir siempre.
+	buffsize: tamaño del buffer. Ej. 4098
+	bufftype: Tipo de buffer. Valores posibles:
+		_IOFBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be fully buffered. 
+		_IOLBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be line buffered. 
+		_IONBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be unbuffered. 
+	rotation.size: Tamáño maximo del fichero de registro. Rotar, antes de superarse y sin dejar trazas "cortadas". 
+	rotation.seconds: Tiempo de vida de un fichero de registro antes de rotar. Ej. 3600, un fichero de registro cada hora.
+	compile.timestamp.url: Url de negociación de un timestamp para la firma.Ej. http://www.originstamp.org/api/stamps, timestamp descentralizada obtenida de la red bitcoin.
+	timestamp.token: Recurso necesario para la negociación de timestamps diferente según la url configurada en compile.timestamp.url Ej. 854081b6dad0c28adcd2f1907f012e3f.
+	pki.public: fichero con la ruta al certificado digital usado en comunicaciones https.
+	pki.private: fichero con la ruta a la clave privada.
+	pki.hash.method: Metodo de hash para la firma de lineas de registro. Valores posibles: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
+	pki.hash.length: Longitud del valor hash que deberá informarse en la traza. Ej 10.
+
