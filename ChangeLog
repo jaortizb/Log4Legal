@@ -1,9 +1,14 @@
 Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014, 2015 Free Software
 Foundation, Inc.
 
-   This file is free documentation; the Free Software Foundation gives
+This file is free documentation; the Free Software Foundation gives
 unlimited permission to copy, distribute and modify it.
 
 [*] Sat Dec 3 2015 - log4legal
 
   o First funcional version.
+
+[*] Fri Feb 25 2016 - log4legal
+
+  o Branch cleaning.
+
