@@ -130,3 +130,9 @@ este fichero. Sus posibles valores son:
 	pki.hash.method: Metodo de hash para la firma de lineas de registro. Valores posibles: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
 	pki.hash.length: Longitud del valor hash que deberá informarse en la traza. Ej 10.
 
+PLEASE CONTACT US
+---------------
+
+Estoy de acuerdo, es duro usar esta herramienta, pero los beneficios conseguidos son los mejores si lo que buscas es rendimiento y legalidad.
+
+Contacta conmigo (jaortizb@gmail.com) y estaré encantado de resolver cualquier duda que puedas tener, tanto si quieres participar en el proyecto como si has visto interes para incluirlo en tus sistemas.
