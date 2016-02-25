@@ -1,0 +1,24 @@
+Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014, 2015 Free Software
+Foundation, Inc.
+
+   This file is free documentation; the Free Software Foundation gives
+unlimited permission to copy, distribute and modify it.
+
+Basic Installation
+==================
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's confgiguration sources
+	 code and you can modify then to customize the library for you personal 
+	 use. For example, by default the library use a free url to get the 
+	 timestamp.
+
+  2. `cd' to the directory containing the package's source code and type 
+	 `make' to compile the package.
+
+  3. Type `make install' to install the programs and any data files and
+     documentation. Due to multiple compilation may occur for differents
+	 profiles of configuration, installation directories are the same 
+	 /lib and /include in the containing directory of the package.
+

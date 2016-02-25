@@ -1,0 +1,25 @@
+Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014, 2015 Free Software
+Foundation, Inc.
+
+   This file is free documentation; the Free Software Foundation gives
+unlimited permission to copy, distribute and modify it.
+
+This file contains all the broken/planned things to do within
+The Log4Legal project.
+
+If you wish to contribute about one of these points, feel free
+to mail me if you need any further information.
+
+    Future features/Planning
+==================================
+ 
+ o Make a compilation catalog (and tests) for especific usages.
+ 
+ o Multi platform/architectures compillation issues.
+
+ o Generic open source installation instructions.
+ 
+ o Include code syntax optimization analyzer for compilation makefiles.
+
+ o Net proxy capabilities for https communication.
+ 
