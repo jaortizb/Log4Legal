@@ -6,15 +6,13 @@ unlimited permission to copy, distribute and modify it.
 
 ## What Log4Legal is?
 
-Log4Legal is a tool that allows you to generate a library for records of logs 
-allowing signatures at the register lines and subsequently used for legal purposes 
-and operational security in the company.
+**Log4Legal is a tool that allows you to generate a library for records of logs allowing signatures at the register lines and subsequently used for legal purposes and operational security in the company.**
 
 In addition, the Log4Legal performance is extraordinary (better than any of his)
 competitors) and can be used in high-performance information systems without any
 problem. Aside from the special format of the lines and the considerations of
 performance is a tool, that once deployed, it is extremely simple to use as it is 
-basically an instrunccion type printf for code C/C++ which submits to the corresponding 
+basically an instruction type printf for code C/C++ which submits to the corresponding 
 line log file to register.
 
 Note: up to here sounds good but as you'll see, if you are still reading, is not a
@@ -22,29 +20,24 @@ tool for newbies.
 
 But, the performance achieved with Log4Legal has a price. To achieve this, it I have 
 intentionally abused programming macros and decisions in time of compilation which 
-makes her a little hard configuracionimplantacion.
+makes her a little hard configuration/installation.
 
 And obviously, this implies that the size of the generated binary will be significantly
 greater (or not) than others achieved with a functions based version rather than macros.
 
-¿Como sería el registro de "Hola Mundo!"?. El fuente que conseguiría esta proeza sería
-el siguiente:
+## What does the "_Hello world!_" registration looks like?. 
+The source that would achieve this feat would be the following:
 
-What does the "Hello world!" registration looks like. The source that would achieve this feat would be
-the following:
-
-1 #include <string.h>
-2 #include <stdio.h>
-3 #include "l4l.h"
-
-4 int main(int argc, char **argv) {
-5	int rc;
-
-6	rc = l4l_init("log.cfg","test",argc,argv);
-7	l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,"Hola Mundo!");
-8	l4l_end();
-9	return(0);
-}
+1. `#include <string.h>`
+2. `#include <stdio.h>`
+3. `#include "l4l.h"`
+4. `int main(int argc, char **argv) {`
+5. `     int rc;`
+6. `     rc = l4l_init("log.cfg","test",argc,argv);`
+7. `     l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,"Hola Mundo!");`
+8. `     l4l_end();`
+9. `     return(0);`
+10.`}`
 
 [3] Necessary to include the capabilities of log4legal.
 [5] Resource id for log4legal code.
@@ -64,21 +57,21 @@ execution:
 		For example: log4legal.test.print_mask=0xffffffff.
 
 	This allows to use the same configuration file for different behaviors depending on indicated 
-	in the instruction l4_linit.
+	in the instruction l4l_init.
 	
-[7] It is a statement of the type printf with three parameters:
+[7] It is a printf style statement with three parameters:
 
-	Param #1 Mascara -> This field replaces the parameter level of traces of other libraries
+	Param #1 Mask -> This field replaces the parameter level of traces of other libraries
 	and its meaning is as follows; is a logical AND with the configured value
 	in the config file (log.cfg in our case) for the configuration variable
 	log4legal.test.printmask=0xffffffff and if the result is different from 0 the trace is displayed,
 	otherwise it is ignored.
 
 	This allows you to have different level of traces for different environments: development, testing
-	or production... or any use that you can think of this capability. Esta misma mascara es la usada 
-	para la sincronización con en volcado a disco; parametros de configuración fsync + flush.
+	or production... or any use that you can think of this capability. The same mask is used to 
+        sync the dump to disc (see config parameter _flush_mask_).
 	
-	Param #2 Format -> L4L_MSJ_Comentar is predefined (you can predefine all want of them) with the 
+	Param #2 Format -> L4L_MSJ_Comentar is predefined (you can pre-define all want of them) with the 
 	following value in l4lcompcfg.h:
 
 		#define L4L_MSJ_Comentar ">%s< MSJ-Comentar: %%s",L4L_HASH
@@ -100,67 +93,72 @@ execution:
 	Param #3  -> list of values to be inserted in the printf style format and if the defined format
 	is correct.
 
-[7] It free log4legal reserved resources.
+[8] It free log4legal reserved resources.
 
-CONFIG FILE OPTIONS
--------------------
+## CONFIG FILE OPTIONS
 
 Each configuration line format is as follows:
 
-	log4legal.<sub>.<variable>
+	_log4legal.<sub>.<variable>_
 
 Where <sub> is the value that the user decides to and that should be taken into account in the development
 After using log4legal. And <variable> is the ability of configurable log4legal in This file. Its possible 
 values are:
 
-	flush_mask: flush + fsync mas to configure the momento of the dump to disk.
-	print_mask: Mask to decide if the trace is registered or not.
-	hash_mask: Mask to decide if the hash is registered or not.
-	buffsize: Buffer size.
-	bufftype: Buffer type. Posible values:
-		_IOFBF: fully buffered. 
-		_IOLBF: line buffered. 
-		_IONBF: unbuffered. 
-	rotation.size: Max file size (in bytes) before rotate. 
-	rotation.seconds: Max time (in seconds) Before rotate.
-	compile.timestamp.url: Time server to negotiate a timestamp for the sign. Ej. http://www.originstamp.org/api/stamps, uncentralized timestamp descentralizada from bitcoin net.
-	timestamp.token: Required (in most of cases) as a param for times server. It is a token Ej. 854081b6dad0c28adcd2f1907f012e3f.
-	pki.public: path to public digital certificate. Format accepted: .crt
-	pki.private: path to private file key. Format accepted: .cer.
-	pki.hash.method: Posible values: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
-	pki.hash.length: The length of the hash value that you must report in the trace. Ej 10.
+ 	flush_mask: flush + fsync mask to configure the moment of the dump to disk.
+ 	print_mask: Mask to decide if the trace is registered or not.
+ 	hash_mask: Mask to decide if the hash is registered or not.
+ 	buffsize: Buffer size.
+ 	bufftype: Buffer type. Posible values:
+ 		_IOFBF: fully buffered. 
+ 		_IOLBF: line buffered. 
+ 		_IONBF: unbuffered. 
+ 	rotation.size: Max file size (in bytes) before rotate. 
+ 	rotation.seconds: Max time (in seconds) Before rotate.
+ 	compile.timestamp.url: Time server to negotiate a timestamp for the sign. Ej. http://www.originstamp.org/api/stamps, uncentralized timestamp descentralizada from bitcoin net.
+ 	timestamp.token: Required (in most of cases) as a param for times server. It is a token Ej. 854081b6dad0c28adcd2f1907f012e3f.
+ 	pki.public: path to public digital certificate. Format accepted: .crt
+ 	pki.private: path to private file key. Format accepted: .cer.
+ 	pki.hash.method: Posible values: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
+ 	pki.hash.length: The length of the hash value that you must report in the trace. Ej 10.
 
-PROPOSED EXAMPLE RESULT
------------------------
+## PROPOSED EXAMPLE RESULT
 
 If is defined this macro in l4lcompcfg.h before compile:
 
 	#define L4L_FILE_NAME "%s/nombre_%s_%ld.log",getenv("L4L_LOG_PATH"),l4l_now("%Y%m%d_%H%M%S"),getpid()
 
-and defined the environmet variable L4L_LOG_PATH whith the value "/tmp" you will obtain a file like thies:
+and defined the environmet variable L4L_LOG_PATH with the value "/tmp" you will obtain a file like this:
 nombre_20150813_130943_34620.log
 
 And the content of it will be a single line of logs between all lines of header and end. Something similar to this:
 
-MSJ-Version: L4L v.0.3 Copyright (c) 2015 Jose Antonio Ortiz <jaortizb@gmail.com>
-MSJ-License: This software is released under the LGPL 2.1 license, see the LICENSE file.
-MSJ-Log: Log File Name /tmp/nombre_20150813_130943_34620.log
-MSJ-Bin: Binary file >./test<
-MSJ-Def: L4L_ROTATION: YES
-MSJ-Def: L4L_HASH_METHOD: sha1
-MSJ-Cfg: print_mask=0xffffffff, hash_mask=0xffffffff, sync_mask=0x0,flush_mask=0x0
-MSJ-Cfg: buffsize=4098, bufftype=_IOFBF, max_size=5000000, max_seconds=3600
->3218575d1f< ffffffff 1439464184 [l4l.c:326] README_TEST: Timestamp: {"hash_sha256":"6e2f137e5d3ba780ee3298c5da6a5ac269c99560eaa372bb06a5e6e15b8c6a99","created_at":"2015-08-13T11:09:54.900Z","updated_at":"2015-08-13T11:09:54.900Z","submitted_at":null,"title":"L4L_Init"}
->fdfc9a5769< ffffffff 1439464184 [test.c:9] README_TEST: Hello World! - 1 - 0.5
->d997654e94< ffffffff 1439464186 [l4l.c:223] README_TEST: Timestamp: {"hash_sha256":"3ef1cc54951ce7b2b86758fdeaed7cefc12e27ebaa01e0558242404c37e17abc","created_at":"2015-08-13T11:09:56.792Z","updated_at":"2015-08-13T11:09:56.792Z","submitted_at":null,"title":"L4L_Close"}
+_MSJ-Version: L4L v.0.3 Copyright (c) 2015 Jose Antonio Ortiz <jaortizb@gmail.com>_
 
-If you investigate the executed code you can find many more configuration options that allow you to customize your traces.
+_MSJ-License: This software is released under the LGPL 2.1 license, see the LICENSE file._
 
-PLEASE CONTACT US
------------------
+_MSJ-Log: Log File Name /tmp/nombre_20150813_130943_34620.log_
+
+_MSJ-Bin: Binary file >./test<_
+
+_MSJ-Def: L4L_ROTATION: YES_
+
+_MSJ-Def: L4L_HASH_METHOD: sha1_
+
+_MSJ-Cfg: print_mask=0xffffffff, hash_mask=0xffffffff, sync_mask=0x0,flush_mask=0x0_
+
+_MSJ-Cfg: buffsize=4098, bufftype=_IOFBF, max_size=5000000, max_seconds=3600_
+
+_>3218575d1f< ffffffff 1439464184 [l4l.c:326] MSJ-Comentar: Timestamp: {"hash_sha256":"6e2f137e5d3ba780ee3298c5da6a5ac269c99560eaa372bb06a5e6e15b8c6a99","created_at":"2015-08-13T11:09:54.900Z","updated_at":"2015-08-13T11:09:54.900Z","submitted_at":null,"title":"L4L_Init"}_
+
+_>fdfc9a5769< ffffffff 1439464184 [test.c:9] README_TEST: Hello World! - 1 - 0.5_
+
+_>d997654e94< ffffffff 1439464186 [l4l.c:223] MSJ-Comentar: Timestamp: {"hash_sha256":"3ef1cc54951ce7b2b86758fdeaed7cefc12e27ebaa01e0558242404c37e17abc","created_at":"2015-08-13T11:09:56.792Z","updated_at":"2015-08-13T11:09:56.792Z","submitted_at":null,"title":"L4L_Close"}_
+
+## PLEASE CONTACT US
 
 I agree, it is hard to use this tool, but the benefits achieved are the best if you are looking for is 
 performance and legality.
 
-Contact me (jaortizbgmail.com) and I will be happy to answer any questions you may have, so if you want 
+Contact me (jaortizb@gmail.com) and I will be happy to answer any questions you may have, so if you want 
 to participate in the project as if you've seen interest to include it in your systems.
