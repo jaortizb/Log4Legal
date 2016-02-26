@@ -51,7 +51,6 @@ be later that come from configuration file.
 Likewise this line needs to be defined two environment variables before
 execution:
 
-	L4L_LOG_PATH -> To find the path where the log files will be stored.
 	L4L_KEY -> password needed for the chained hash.
 
 	The description of the parameters of the l4l_init function is as follows:
@@ -67,91 +66,99 @@ execution:
 	
 [7] It is a statement of the type printf with three parameters:
 
-	Param #1 Mascara -> Este campo sustituye al parámetro nivel de trazas de otras librerías
-	y su significado es el siguiente; se hace un AND lógico con el valor configurado 
-	en el fichero de configuración (log.cfg para nuestro caso) para la variable de configuración
-	log4legal.test.print_mask=0xffffffff y si el resultado es distinto de 0 la traza se mostrará,
-	en caso contrario se ignorará.
+	Param #1 Mascara -> This field replaces the parameter level of traces of other libraries
+	and its meaning is as follows; is a logical AND with the configured value
+	in the config file (log.cfg in our case) for the configuration variable
+	log4legal.test.printmask=0xffffffff and if the result is different from 0 the trace is displayed,
+	otherwise it is ignored.
+
+	This allows you to have different level of traces for different environments: development, testing
+	or production... or any use that you can think of this capability. Esta misma mascara es la usada 
+	para la sincronización con en volcado a disco; parametros de configuración fsync + flush.
 	
-	Esto permite tener distinto nivel de trazas para distintos entornos: DESARROLLO, PRUEBAS
-	o PRODUCCION ... o cualquier uso que se te ocurra de esta capacidad.
-	
-	Param #2 Formato -> L4L_MSJ_Comentar está predefinido (tu puedes predefinir las que quieras) con
-	el siguiente valor en l4lcompcfg.h:
+	Param #2 Format -> L4L_MSJ_Comentar is predefined (you can predefine all want of them) with the 
+	following value in l4lcompcfg.h:
 
 		#define L4L_MSJ_Comentar ">%s< MSJ-Comentar: %%s",L4L_HASH
 	
-	donde el primer %s mostrará la información cifrada que da valor legal a la línea y %%s es
-	donde se insertará "Hola Mundo!". Tu puedes definir tantos valores como quieras en la
-	definición del formato si despues tienes cuidado a la hora de usarlo. Por ejemplom si
-	defines:
+	where the first %s display encrypted information that gives legal value to the line and s is
+	where inserted is "Hello world!". You can define as many values as you want in the format definition 
+	if after you care when using it. By example if you define:
 	
 		#define L4L_TestREADME ">%s< README_TEST: %%s - %%d - %%f",L4L_HASH
 	
-	para definir un nuevo formato e incluir un decimal y un float, a la hora de programar
-	deberas usar la línea:
+	to define a new format and include a decimal and a float at the time of program You should 
+	use the line:
 	
-		l4l_printf(0xFFFFFFFF,L4L_TestREADME,"Hola Mundo!",1,(float)1/2);
+		l4l_printf(0xFFFFFFFF,L4L_TestREADME,"Hello World!",1,(float)1/2);
 		
-	este cambio deberás hacerlo en el fichero l4lcompcfg.h antes de compilar la librería
-	Esto parece un poco duro pero solamente se hace una vez y los beneficios son asombrosos
-	para sistemas de alto rendimiento.
-	
-	Param #3  -> lista de valores a insertar en el formato, al estilo printf y si el formato definido
-	es el correcto.
+	You must make this change in the l4lcompcfg.h file before compiling the library. This seems
+	a little hard but it is only done once and the benefits are amazing for high-performance systems.	
 
-[7] Liberación de los recursos para log4legal.
+	Param #3  -> list of values to be inserted in the printf style format and if the defined format
+	is correct.
 
-OPCIONES PARA EL FICHERO DE CONFIGURACIÓN
------------------------------------------
+[7] It free log4legal reserved resources.
 
-El formato de cada línea de configuración es la siguiente:
+CONFIG FILE OPTIONS
+-------------------
+
+Each configuration line format is as follows:
 
 	log4legal.<sub>.<variable>
-	
-Donde <sub> es el valor que el usuario decide y que debe de tenerse en cuenta en los desarrollos
-posteriores que usen log4legal. Y <variable> es la capacidad de log4legal configurable en
-este fichero. Sus posibles valores son:
 
-	flush_mask: Mascara de flush + fsync del buffer de sistema. Ej. 0x00000000 para no-flush (valor por defecto si no se informa en la configuración).
-	print_mask: Mascara para simular nivel de traza en varios entornos. Valor 0xffffffff por defecto.
-	hash_mask: Mascara par decidir si imprimir o no el hash. Ej. 0xffffffff para imprimir siempre.
-	buffsize: tamaño del buffer. Ej. 4098
-	bufftype: Tipo de buffer. Valores posibles:
-		_IOFBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be fully buffered. 
-		_IOLBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be line buffered. 
-		_IONBF: The value of this macro is an integer constant expression that can be used as the mode argument to the setvbuf function to specify that the stream should be unbuffered. 
-	rotation.size: Tamáño maximo del fichero de registro. Rotar, antes de superarse y sin dejar trazas "cortadas". 
-	rotation.seconds: Tiempo de vida de un fichero de registro antes de rotar. Ej. 3600, un fichero de registro cada hora.
-	compile.timestamp.url: Url de negociación de un timestamp para la firma.Ej. http://www.originstamp.org/api/stamps, timestamp descentralizada obtenida de la red bitcoin.
-	timestamp.token: Recurso necesario para la negociación de timestamps diferente según la url configurada en compile.timestamp.url Ej. 854081b6dad0c28adcd2f1907f012e3f.
-	pki.public: fichero con la ruta al certificado digital usado en comunicaciones https.
-	pki.private: fichero con la ruta a la clave privada.
-	pki.hash.method: Metodo de hash para la firma de lineas de registro. Valores posibles: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
-	pki.hash.length: Longitud del valor hash que deberá informarse en la traza. Ej 10.
+Where <sub> is the value that the user decides to and that should be taken into account in the development
+After using log4legal. And <variable> is the ability of configurable log4legal in This file. Its possible 
+values are:
 
-RESULTADO
----------
+	flush_mask: flush + fsync mas to configure the momento of the dump to disk.
+	print_mask: Mask to decide if the trace is registered or not.
+	hash_mask: Mask to decide if the hash is registered or not.
+	buffsize: Buffer size.
+	bufftype: Buffer type. Posible values:
+		_IOFBF: fully buffered. 
+		_IOLBF: line buffered. 
+		_IONBF: unbuffered. 
+	rotation.size: Max file size (in bytes) before rotate. 
+	rotation.seconds: Max time (in seconds) Before rotate.
+	compile.timestamp.url: Time server to negotiate a timestamp for the sign. Ej. http://www.originstamp.org/api/stamps, uncentralized timestamp descentralizada from bitcoin net.
+	timestamp.token: Required (in most of cases) as a param for times server. It is a token Ej. 854081b6dad0c28adcd2f1907f012e3f.
+	pki.public: path to public digital certificate. Format accepted: .crt
+	pki.private: path to private file key. Format accepted: .cer.
+	pki.hash.method: Posible values: md2, md4, md5, sha, sha1, sha224, sha256, sha384, sha512, dss1, mdc2 y ripemd160.
+	pki.hash.length: The length of the hash value that you must report in the trace. Ej 10.
 
-El contenido de logs configurado será una única linea de logs entre todas las líneas de cabecera y fin. Algo similar a esto:
+PROPOSED EXAMPLE RESULT
+-----------------------
+
+If is defined this macro in l4lcompcfg.h before compile:
+
+	#define L4L_FILE_NAME "%s/nombre_%s_%ld.log",getenv("L4L_LOG_PATH"),l4l_now("%Y%m%d_%H%M%S"),getpid()
+
+and defined the environmet variable L4L_LOG_PATH whith the value "/tmp" you will obtain a file like thies:
+nombre_20150813_130943_34620.log
+
+And the content of it will be a single line of logs between all lines of header and end. Something similar to this:
 
 MSJ-Version: L4L v.0.3 Copyright (c) 2015 Jose Antonio Ortiz <jaortizb@gmail.com>
 MSJ-License: This software is released under the LGPL 2.1 license, see the LICENSE file.
-MSJ-Log: Log File Name ./nombre_20151201_130943_34620.log
-MSJ-Bin: Binary file >./test.exe<
+MSJ-Log: Log File Name /tmp/nombre_20150813_130943_34620.log
+MSJ-Bin: Binary file >./test<
 MSJ-Def: L4L_ROTATION: YES
 MSJ-Def: L4L_HASH_METHOD: sha1
 MSJ-Cfg: print_mask=0xffffffff, hash_mask=0xffffffff, sync_mask=0x0,flush_mask=0x0
 MSJ-Cfg: buffsize=4098, bufftype=_IOFBF, max_size=5000000, max_seconds=3600
->3218575d1f< ffffffff 1439464184 [l4l.c:326] MSJ-Comentar: Timestamp: {"hash_sha256":"6e2f137e5d3ba780ee3298c5da6a5ac269c99560eaa372bb06a5e6e15b8c6a99","created_at":"2015-08-13T11:09:54.900Z","updated_at":"2015-08-13T11:09:54.900Z","submitted_at":null,"title":"L4L_Init"}
->fdfc9a5769< ffffffff 1439464184 [test.c:9] MSJ-Comentar: Hello World!!
->d997654e94< ffffffff 1439464186 [l4l.c:223] MSJ-Comentar: Timestamp: {"hash_sha256":"3ef1cc54951ce7b2b86758fdeaed7cefc12e27ebaa01e0558242404c37e17abc","created_at":"2015-08-13T11:09:56.792Z","updated_at":"2015-08-13T11:09:56.792Z","submitted_at":null,"title":"L4L_Close"}
+>3218575d1f< ffffffff 1439464184 [l4l.c:326] README_TEST: Timestamp: {"hash_sha256":"6e2f137e5d3ba780ee3298c5da6a5ac269c99560eaa372bb06a5e6e15b8c6a99","created_at":"2015-08-13T11:09:54.900Z","updated_at":"2015-08-13T11:09:54.900Z","submitted_at":null,"title":"L4L_Init"}
+>fdfc9a5769< ffffffff 1439464184 [test.c:9] README_TEST: Hello World! - 1 - 0.5
+>d997654e94< ffffffff 1439464186 [l4l.c:223] README_TEST: Timestamp: {"hash_sha256":"3ef1cc54951ce7b2b86758fdeaed7cefc12e27ebaa01e0558242404c37e17abc","created_at":"2015-08-13T11:09:56.792Z","updated_at":"2015-08-13T11:09:56.792Z","submitted_at":null,"title":"L4L_Close"}
 
-Si investigas el código ejecutado podrás encontrar muchas mas opciones de configuración que te permitirán personalizar tus trazas.
+If you investigate the executed code you can find many more configuration options that allow you to customize your traces.
 
 PLEASE CONTACT US
----------------
+-----------------
 
-Estoy de acuerdo, es duro usar esta herramienta, pero los beneficios conseguidos son los mejores si lo que buscas es rendimiento y legalidad.
+I agree, it is hard to use this tool, but the benefits achieved are the best if you are looking for is 
+performance and legality.
 
-Contacta conmigo (jaortizb@gmail.com) y estaré encantado de resolver cualquier duda que puedas tener, tanto si quieres participar en el proyecto como si has visto interes para incluirlo en tus sistemas.
+Contact me (jaortizbgmail.com) and I will be happy to answer any questions you may have, so if you want 
+to participate in the project as if you've seen interest to include it in your systems.
