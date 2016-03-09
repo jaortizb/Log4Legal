@@ -29,15 +29,14 @@
 
 int main(int argc, char **argv) {
 	int i=0,rc;
-	char linea[L4L_MAX_TRZ_LEN]="",L2[L4L_MAX_TRZ_LEN]="";
+	char linea[L4L_MAX_TRZ_LEN]="";
 	FILE * fp;
 
 	rc = l4l_init("log.cfg","test",argc,argv);
 	setenv("L4L_KEY",argv[1],0);
 	while (fgets ( linea, sizeof linea, stdin ) != NULL) {
 		linea[strlen(linea)-1]=0;
-		strcpy(L2,(char*)timestamp(linea,linea));
-		l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,L2);
+		l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,linea);
 	}
 	printf ("fin");
 	l4l_end();
