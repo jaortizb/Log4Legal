@@ -292,14 +292,14 @@ int l4l_init(const char *cfg,const char *cat,int argc,char **argv)  {
 		return -11;
 	}
 #endif
-
 	sprintf(__l4l.data.s_trz,"MSJ-Version: L4L v.%s Copyright (c) 2015 Jose Antonio Ortiz <jaortizb@gmail.com>\n",L4L_VERSION);
 	sprintf(__l4l.data.s_trz,"%sMSJ-License: This software is released under the LGPL 2.1 license, see the LICENSE file.\n",__l4l.data.s_trz);
 	sprintf(__l4l.data.s_trz,"%sMSJ-Log: Log File Name %s\n",__l4l.data.s_trz,__l4l.logFileName);
 	if(argv!=NULL) { 
 		sprintf(__l4l.data.s_trz,"%sMSJ-Bin: Binary file >%s<\n",__l4l.data.s_trz,argv[0]);
-		for(i=1;i<argc;i++)
-			sprintf(__l4l.data.s_trz,"%sMSJ-Bin: Binary file arg[%d]=%s\n",__l4l.data.s_trz,argv[i]);
+		for(i=1;i<argc;i++) {
+			sprintf(__l4l.data.s_trz,"%sMSJ-Bin: Binary file arg[%d]=%s\n",__l4l.data.s_trz,i,argv[i]);
+		}
 	}
 #if defined(L4L_ROTATION) && L4L_ROTATION == YES
 	sprintf(__l4l.data.s_trz,"%sMSJ-Def: L4L_ROTATION: YES\n",__l4l.data.s_trz);
