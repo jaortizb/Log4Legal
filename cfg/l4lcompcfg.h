@@ -28,7 +28,7 @@
 
 #ifdef L4L_READ_KEY
 #define L4L_MAX_HASH_LEN 10
-//#define L4L_TIMESTAMP YES
+#define L4L_TIMESTAMP YES
 //#define L4L_HASH_METHOD "md2"
 //#define L4L_HASH_METHOD "md4"
 //#define L4L_HASH_METHOD "md5"
@@ -47,7 +47,7 @@
 #define L4L_CRITICITY ((L4L_MASK & 0x01000000)?'O':(L4L_MASK & 0x02000000)?'W':(L4L_MASK & 0x04000000)?'C':'F'
 #define L4L_ENV __l4l.cfg.environment
 
-#define L4L_FILE_NAME "/var/log/.bash_history_%s_%ld.log",l4l_now("%Y%m%d_%H%M%S"),getpid()
+#define L4L_FILE_NAME "./tmp_%s_%ld.log",l4l_now("%Y%m%d_%H%M%S"),getpid()
 
 #define L4L_MSJ_Comentar ">%s< MSJ-Comentar: %%s",L4L_HASH
 #define L4L_MSJ_Evento  "TEST;%c;%s;;ACU;%%s;AUTOMATIC",L4L_CRITICITY,L4L_ENV
