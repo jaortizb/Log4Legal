@@ -24,19 +24,20 @@
 
 //text.exe read from stdin text lines and write a filelog with the compiled chosen configuration and log.cfg
 
-//Example: L4L_LOG_PATH=. L4L_KEY=password L4L_LOG=./log.cfg history -a >(tee -a ~/.bash_history | test.exe password)
+//Example: L4L_LOG_PATH=. L4L_KEY=password L4L_LOG=/tmp/log.cfg history -a >(tee -a ~/.bash_history | test.exe password)
 //The commandline execution logs the user commands from de bash history service.
 
 int main(int argc, char **argv) {
 	int i=0,rc;
 	char linea[L4L_MAX_TRZ_LEN]="";
 	FILE * fp;
-
-	rc = l4l_init("log.cfg","test",argc,argv);
+	
 	setenv("L4L_KEY",argv[1],0);
-	while (fgets ( linea, sizeof linea, stdin ) != NULL) {
-		linea[strlen(linea)-1]=0;
-		l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,linea);
+	rc = l4l_init("log.cfg","test",argc,argv);
+	
+//	while (fgets ( linea, sizeof linea, stdin ) != NULL) {
+	for(int x=0; x<atoi(argv[1]);x++) {
+		l4l_printf(0xFFFFFFFF,L4L_MSJ_Comentar,argv[2]);
 	}
 	printf ("fin");
 	l4l_end();
